@@ -1,0 +1,63 @@
+:root {
+    --bg-gradient: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+    --card-bg: rgba(255, 255, 255, 0.85);
+    --text-main: #2c3e50;
+    --text-muted: #7f8c8d;
+    --accent: #3498db;
+    --success: #2ecc71;
+    --border-radius: 12px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+
+body { background: var(--bg-gradient); color: var(--text-main); min-height: 100vh; padding: 20px; }
+.app-container { max-width: 800px; margin: 0 auto; }
+
+header { text-align: center; margin-bottom: 20px; }
+header h1 { font-weight: 600; letter-spacing: -0.5px; }
+header p { color: var(--text-muted); font-size: 0.9rem; }
+
+/* Progress Board */
+.progress-board {
+    background: white; padding: 20px; border-radius: var(--border-radius);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 30px;
+}
+.progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-weight: 600; }
+.badge { background: var(--accent); color: white; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; transition: background 0.3s; }
+
+.progress-bar-container { background: #eee; height: 10px; border-radius: 5px; overflow: hidden; margin-bottom: 10px; }
+.progress-fill { height: 100%; background: var(--success); width: 0%; transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+.motivation { font-size: 0.85rem; color: var(--text-muted); text-align: center; font-style: italic; }
+
+/* Insurance Card */
+.insurance-card { background: var(--card-bg); padding: 15px; border-radius: var(--border-radius); margin-bottom: 30px; }
+.insurance-card h3 { font-size: 0.9rem; margin-bottom: 10px; text-align: center;}
+.currency-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 10px; }
+.currency-item { background: #fff; padding: 8px; border-radius: 8px; text-align: center; font-size: 0.9rem;}
+
+/* Checklist */
+.category-section { margin-bottom: 25px; }
+.category-title { font-size: 1.1rem; margin-bottom: 15px; border-bottom: 2px solid var(--accent); display: inline-block; padding-bottom: 3px; }
+
+.check-item {
+    background: var(--card-bg); padding: 12px 15px; border-radius: 8px;
+    margin-bottom: 8px; display: flex; align-items: center; cursor: pointer;
+    transition: transform 0.1s, background 0.2s;
+}
+.check-item:active { transform: scale(0.98); }
+.check-item.completed { background: #f0fdf4; opacity: 0.8; }
+.check-item.completed .doc-name { text-decoration: line-through; color: var(--text-muted); }
+
+/* Custom Checkbox */
+.check-item input[type="checkbox"] { display: none; }
+.custom-checkbox {
+    width: 22px; height: 22px; border: 2px solid var(--accent); border-radius: 6px;
+    margin-right: 15px; display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+}
+.check-item input:checked + .custom-checkbox { background: var(--success); border-color: var(--success); }
+.check-item input:checked + .custom-checkbox::after {
+    content: '✓'; color: white; font-size: 14px; font-weight: bold;
+}
+
+.doc-name { font-weight: 500; font-size: 0.95rem; transition: color 0.2s; }

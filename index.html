@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EuroPath Tracker</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <button id="theme-toggle" class="theme-btn" aria-label="Toggle Dark Mode">🌙</button>
+            <h1>Schengen Document Tracker</h1>
+            <p>Schengen Visa Checklist</p>
+        </header>
+
+        <section class="progress-board">
+            <div class="progress-header">
+                <span id="progress-text">0% Completed</span>
+                <span id="rank-badge" class="badge">Rank: Beginner</span>
+            </div>
+            <div class="progress-bar-container">
+                <div id="progress-fill" class="progress-fill"></div>
+            </div>
+            <p id="motivational-message" class="motivation">Let's start gathering those documents!</p>
+        </section>
+
+        <section class="insurance-card">
+            <h3>Minimum Insurance Coverage</h3>
+            <div class="currency-grid" id="currency-grid"></div>
+        </section>
+
+        <main id="document-container">
+            </main>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js');
+            });
+        }
+    </script>
+</body>
+</html>
