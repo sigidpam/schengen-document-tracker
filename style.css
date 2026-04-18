@@ -6,7 +6,7 @@
     --text-muted: #7f8c8d;
     --accent: #3498db;
     --success: #10b981;
-    --success-bg: #ecfdf5; /* Light green for checked items */
+    --success-bg: #ecfdf5; 
     --border-radius: 12px;
     --shadow: 0 4px 15px rgba(0,0,0,0.05);
 }
@@ -19,7 +19,7 @@
     --text-muted: #94a3b8;
     --accent: #38bdf8;
     --success: #10b981;
-    --success-bg: rgba(16, 185, 129, 0.15); /* Transparent green for dark mode */
+    --success-bg: rgba(16, 185, 129, 0.15); 
     --shadow: 0 4px 15px rgba(0,0,0,0.3);
 }
 
@@ -30,7 +30,7 @@ body {
     color: var(--text-main); 
     min-height: 100vh; 
     padding: 20px; 
-    transition: background 0.4s ease, color 0.4s ease; /* Smooth dark mode transition */
+    transition: background 0.4s ease, color 0.4s ease; 
 }
 
 .app-container { max-width: 800px; margin: 0 auto; position: relative; }
@@ -68,12 +68,10 @@ header p { color: var(--text-muted); font-size: 0.9rem; }
     background-size: 1rem 1rem;
 }
 
-/* Moves the stripes when active */
 .progress-fill.active { animation: progress-stripes 1s linear infinite; }
 
-/* Glowing pulse when 100% completed */
 .progress-fill.complete {
-    background-image: none; /* Remove stripes */
+    background-image: none; 
     box-shadow: 0 0 15px var(--success);
     animation: pulse-glow 2s infinite;
 }
@@ -115,6 +113,7 @@ header p { color: var(--text-muted); font-size: 0.9rem; }
     width: 22px; height: 22px; border: 2px solid var(--accent); border-radius: 6px;
     margin-right: 15px; display: flex; align-items: center; justify-content: center;
     transition: all 0.2s;
+    flex-shrink: 0; /* Prevents checkbox from shrinking when text is long */
 }
 
 @keyframes pop {
@@ -132,5 +131,24 @@ header p { color: var(--text-muted); font-size: 0.9rem; }
     content: '✓'; color: white; font-size: 14px; font-weight: bold;
 }
 
+/* --- Document Descriptions --- */
+.doc-text-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
 .doc-name { font-weight: 500; font-size: 0.95rem; transition: color 0.2s; color: var(--text-main);}
 
+.doc-desc {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+    font-style: italic;
+    transition: color 0.2s;
+}
+
+.check-item.completed .doc-desc {
+    text-decoration: line-through;
+    opacity: 0.6;
+}

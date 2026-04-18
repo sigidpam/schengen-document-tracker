@@ -1,15 +1,20 @@
 const EUR_AMOUNT = 30000;
 const rates = { EUR: 1, IDR: 17000, USD: 1.08, MYR: 5.10 }; 
 
+// Updated with object format to allow descriptions
 const docCategories = {
     "Travel Documents": [
-        "Asuransi", "Ticket Flight PP", "Hotel Booking", "Flight/Train/Transport inter-city", "Itinerary traveling"
+        { name: "Asuransi", desc: "wajib Worldwide agar bisa diklaim di mana saja" },
+        { name: "Ticket Flight PP" },
+        { name: "Hotel Booking" },
+        { name: "Flight/Train/Transport inter-city" },
+        { name: "Itinerary traveling" }
     ],
     "Data Pribadi": [
-        "Akta Lahir", "Kartu Keluarga", "Halaman data passport", "Halaman cap/visa passport", "VISA Approved sebelumnya", "NPWP", "SPT / Bukti Potong Pajak", "STNK Mobil", "SHM Rumah"
+        { name: "Akta Lahir" }, { name: "Kartu Keluarga" }, { name: "Halaman data passport" }, { name: "Halaman cap/visa passport" }, { name: "VISA Approved sebelumnya" }, { name: "NPWP" }, { name: "SPT / Bukti Potong Pajak" }, { name: "STNK Mobil" }, { name: "SHM Rumah" }
     ],
     "Surat Keterangan": [
-        "Personal Statement", "Employer Reference", "Bank reference", "Bank statement 3months", "Payslip 3 months"
+        { name: "Personal Statement" }, { name: "Employer Reference" }, { name: "Bank reference" }, { name: "Bank statement 3months" }, { name: "Payslip 3 months" }
     ]
 };
 
@@ -52,6 +57,7 @@ function updateThemeIcon(theme) {
     btn.textContent = theme === 'light' ? '🌙' : '☀️';
 }
 
+// --- Render Logic ---
 function renderCurrencies() {
     const grid = document.getElementById('currency-grid');
     const currencies = [
@@ -78,8 +84,13 @@ function renderChecklist() {
         section.className = 'category-section';
         section.innerHTML = `<h2 class="category-title">${category}</h2>`;
         
-        docs.forEach(docName => {
+        docs.forEach(docItem => {
             totalDocs++;
+            
+            // Extract name and description (if exists)
+            const docName = docItem.name;
+            const docDesc = docItem.desc ? `<div class="doc-desc">${docItem.desc}</div>` : '';
+            
             const docId = docName.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase();
             const isChecked = localStorage.getItem(`europath-check-${docId}`) === 'true';
             
@@ -89,7 +100,10 @@ function renderChecklist() {
             label.innerHTML = `
                 <input type="checkbox" id="${docId}" ${isChecked ? 'checked' : ''} onchange="toggleCheck(this, '${docId}')">
                 <div class="custom-checkbox"></div>
-                <div class="doc-name">${docName}</div>
+                <div class="doc-text-wrapper">
+                    <div class="doc-name">${docName}</div>
+                    ${docDesc}
+                </div>
             `;
             section.appendChild(label);
         });
@@ -97,6 +111,7 @@ function renderChecklist() {
     }
 }
 
+// --- Gamification & State Logic ---
 function toggleCheck(checkbox, docId) {
     localStorage.setItem(`europath-check-${docId}`, checkbox.checked);
     const label = checkbox.parentElement;
@@ -126,7 +141,7 @@ function updateProgress() {
         progressFill.classList.remove('complete');
     } else if (percentage === 100) {
         progressFill.classList.remove('active');
-        progressFill.classList.add('complete'); // Triggers the glow
+        progressFill.classList.add('complete'); 
     } else {
         progressFill.classList.remove('active', 'complete');
     }
@@ -153,5 +168,5 @@ function updateProgress() {
     }
 }
 
+// Start App
 init();
-
