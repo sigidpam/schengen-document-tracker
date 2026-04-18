@@ -10,7 +10,7 @@ const docCategories = {
         { name: "Akta Lahir" }, { name: "Kartu Keluarga" }, { name: "Halaman data passport" }, { name: "Halaman cap/visa passport" }, { name: "VISA Approved sebelumnya" }, { name: "NPWP" }, { name: "SPT / Bukti Potong Pajak" }, { name: "STNK Mobil" }, { name: "SHM Rumah" }
     ],
     "Surat Keterangan": [
-        { name: "Personal Statement" }, { name: "Employer Reference" }, { name: "Bank reference" }, { name: "Bank statement 3months" }, { name: "Payslip 3 months" }
+        { name: "Personal Statement" }, { name: "Employer Reference" }, { name: "Bank reference" }, { name: "Bank statement 3months", desc: "sebisa mungkin rekening aktif, dan keep uang sesuai expense selama di euro beberapa bulan sebelumnya." }, { name: "Payslip 3 months" }
     ]
 };
 
