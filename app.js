@@ -3,7 +3,7 @@ const rates = { EUR: 1, IDR: 17000, USD: 1.08, MYR: 5.10 };
 
 const docCategories = {
     "Travel Documents": [
-        { name: "Asuransi", desc: "wajib Worldwide agar bisa diklaim di mana saja." },
+        { name: "Asuransi", desc: "wajib Worldwide agar bisa diklaim di mana saja" },
         { name: "Ticket Flight PP" }, { name: "Hotel Booking" }, { name: "Flight/Train/Transport inter-city" }, { name: "Itinerary traveling" }
     ],
     "Data Pribadi": [
@@ -26,6 +26,7 @@ let totalDocs = 0;
 
 function init() {
     initTheme();
+    setupBriefcase();
     renderCurrencies();
     renderChecklist();
     updateProgress();
@@ -48,6 +49,17 @@ function updateThemeIcon(theme) {
     document.getElementById('theme-toggle').textContent = theme === 'light' ? '🌙' : '☀️';
 }
 
+// Briefcase Accordion Logic
+function setupBriefcase() {
+    const header = document.getElementById('briefcase-toggle');
+    const content = document.getElementById('briefcase-content');
+    
+    header.addEventListener('click', () => {
+        header.classList.toggle('open');
+        content.classList.toggle('open');
+    });
+}
+
 function renderCurrencies() {
     const grid = document.getElementById('currency-grid');
     grid.innerHTML = [
@@ -61,7 +73,6 @@ function renderCurrencies() {
     `).join('');
 }
 
-// Render Logic with Briefcase Support
 function renderChecklist() {
     const container = document.getElementById('document-container');
     const briefcaseList = document.getElementById('briefcase-list');
@@ -70,12 +81,10 @@ function renderChecklist() {
     totalDocs = 0;
 
     for (const [category, docs] of Object.entries(docCategories)) {
-        // Create an ID for the category so items can find their way back
         const catId = category.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase();
 
         const section = document.createElement('div');
         section.className = 'category-section';
-        // Add a specific wrapper for the list items
         section.innerHTML = `
             <h2 class="category-title">${category}</h2>
             <div id="cat-list-${catId}"></div>
@@ -93,8 +102,6 @@ function renderChecklist() {
             
             const label = document.createElement('label');
             label.className = `check-item ${isChecked ? 'completed' : ''}`;
-            
-            // Store the original category so it knows where to return
             label.dataset.originId = `cat-list-${catId}`; 
             
             label.innerHTML = `
@@ -106,7 +113,6 @@ function renderChecklist() {
                 </div>
             `;
 
-            // If it's already checked on load, put it straight in the Briefcase
             if (isChecked) {
                 briefcaseList.appendChild(label);
             } else {
@@ -116,18 +122,21 @@ function renderChecklist() {
     }
 }
 
-// The Animation & Movement Logic
 function toggleCheck(checkbox, docId) {
     localStorage.setItem(`europath-check-${docId}`, checkbox.checked);
     const label = checkbox.parentElement;
 
-    // 1. Update the top progress bar instantly for immediate feedback
+    // 1. Update progress and counter immediately
     updateProgress();
 
-    // 2. Trigger the "shrink and fade" CSS animation
-    label.classList.add('animating');
+    // 2. Add directional animation class
+    if (checkbox.checked) {
+        label.classList.add('animating-up');
+    } else {
+        label.classList.add('animating-down');
+    }
 
-    // 3. Wait 300ms for the animation to finish, then move the HTML element
+    // 3. Wait for animation, move it, and remove animation class so it pops back in
     setTimeout(() => {
         if (checkbox.checked) {
             label.classList.add('completed');
@@ -137,12 +146,11 @@ function toggleCheck(checkbox, docId) {
             document.getElementById(label.dataset.originId).appendChild(label);
         }
 
-        // 4. Remove the animation class so it scales back up to full size in its new home
         setTimeout(() => {
-            label.classList.remove('animating');
+            label.classList.remove('animating-up', 'animating-down');
         }, 50);
 
-    }, 300); // Matches the 0.3s transition in CSS
+    }, 300);
 }
 
 function updateProgress() {
@@ -153,6 +161,9 @@ function updateProgress() {
     const percentage = totalDocs === 0 ? 0 : Math.round((checkedDocs / totalDocs) * 100);
     const progressFill = document.getElementById('progress-fill');
     
+    // Update the Briefcase title counter
+    document.getElementById('briefcase-title').textContent = `Secured in Briefcase (${checkedDocs})`;
+
     progressFill.style.width = `${percentage}%`;
     document.getElementById('progress-text').textContent = `${percentage}% Completed`;
 
