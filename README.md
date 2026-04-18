@@ -41,9 +41,8 @@ If you want to clone this repository and test it yourself:
 ```bash
 cd schengen-document-tracker 
 ```
-
 Using VS Code: Install the Live Server extension and click "Go Live".
-Using Python: Run python3 -m http.server 5500 in your terminal.
+Using Python: Run ```bash python3 -m http.server 5500``` in your terminal.
 
 
 3. **Install the App:**
