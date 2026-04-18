@@ -9,35 +9,46 @@
 </head>
 <body>
     <div class="app-container">
-        <header>
-            <button id="theme-toggle" class="theme-btn" aria-label="Toggle Dark Mode">🌙</button>
-            <h1>Schengen Document Tracker</h1>
-            <p>Hassle No More!</p>
-        </header>
+        
+        <div class="top-panel">
+            <header>
+                <button id="theme-toggle" class="theme-btn" aria-label="Toggle Dark Mode">🌙</button>
+                <h1>Schengen Document Tracker</h1>
+                <p>Schengen Visa Checklist</p>
+            </header>
 
-        <section class="progress-board">
-            <div class="progress-header">
-                <span id="progress-text">0% Completed</span>
-                <span id="rank-badge" class="badge">Rank: Beginner</span>
-            </div>
-            <div class="progress-bar-container">
-                <div id="progress-fill" class="progress-fill"></div>
-            </div>
-            <p id="motivational-message" class="motivation">Let's start gathering those documents!</p>
-        </section>
+            <section class="progress-board">
+                <div class="progress-header">
+                    <span id="progress-text">0% Completed</span>
+                    <span id="rank-badge" class="badge">Rank: Beginner</span>
+                </div>
+                <div class="progress-bar-container">
+                    <div id="progress-fill" class="progress-fill"></div>
+                </div>
+                <p id="motivational-message" class="motivation">Let's start gathering those documents!</p>
+            </section>
+        </div>
 
-        <section class="insurance-card">
-            <h3>Minimum Insurance Coverage</h3>
-            <div class="currency-grid" id="currency-grid"></div>
-        </section>
+        <div class="scrollable-area">
+            <section class="insurance-card">
+                <h3>Minimum Insurance Coverage</h3>
+                <div class="currency-grid" id="currency-grid"></div>
+            </section>
 
-        <main id="document-container">
-            </main>
+            <main id="document-container">
+                </main>
+
+            <section class="briefcase-section">
+                <h2>💼 Secured in Briefcase</h2>
+                <div id="briefcase-list">
+                    </div>
+            </section>
+        </div>
+
     </div>
 
     <script src="app.js"></script>
     <script>
-        // Register the Service Worker for Offline Capabilities
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('./sw.js');
