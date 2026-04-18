@@ -34,21 +34,24 @@ If you want to clone this repository and test it yourself:
 1. **Clone the repo:**
    ```bash
    git clone [https://github.com/sigidpam/schengen-document-tracker.git](https://github.com/sigidpam/schengen-document-tracker.git)
+  
 
-2. Open the project folder:
+2. **Open the project folder:**
 
 ```bash
 cd schengen-document-tracker 
+```
 
 Using VS Code: Install the Live Server extension and click "Go Live".
 Using Python: Run python3 -m http.server 5500 in your terminal.
 
 
-Install the App:
+3. **Install the App:**
 Open your browser (e.g., http://127.0.0.1:5500), click the install icon in the URL bar, and add it to your home screen!
 
-🤝 Contributing
+
+🤝 **Contributing**
 Contributions, issues, and feature requests are welcome! If you have ideas to add more visa categories or improve the gamification, feel free to fork the repository and submit a Pull Request.
 
-📄 License
+📄 **License**
 This project is licensed under the GPL-3.0 License.
