@@ -108,7 +108,7 @@ header p { color: var(--text-muted); font-size: 0.9rem; }
 .doc-desc { font-size: 0.75rem; color: var(--text-muted); margin-top: 2px; font-style: italic; transition: color 0.2s; }
 .check-item.completed .doc-desc { text-decoration: line-through; opacity: 0.6; }
 
-/* --- BRIEFCASE SECTION --- */
+/* --- BRIEFCASE SECTION ----- */
 .briefcase-section {
     margin-top: 40px; padding: 20px;
     background: var(--success-bg);

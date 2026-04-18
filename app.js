@@ -3,7 +3,7 @@ const rates = { EUR: 1, IDR: 17000, USD: 1.08, MYR: 5.10 };
 
 const docCategories = {
     "Travel Documents": [
-        { name: "Asuransi", desc: "wajib Worldwide agar bisa diklaim di mana saja" },
+        { name: "Asuransi", desc: "wajib Worldwide agar bisa diklaim di mana saja." },
         { name: "Ticket Flight PP" }, { name: "Hotel Booking" }, { name: "Flight/Train/Transport inter-city" }, { name: "Itinerary traveling" }
     ],
     "Data Pribadi": [
