@@ -1,16 +1,46 @@
 const EUR_AMOUNT = 30000;
 const rates = { EUR: 1, IDR: 17000, USD: 1.08, MYR: 5.10 }; 
 
+// NEW: Data Structure with "profiles" filter
 const docCategories = {
     "Travel Documents": [
-        { name: "Asuransi", desc: "wajib Worldwide agar bisa diklaim di mana saja" },
-        { name: "Ticket Flight PP" }, { name: "Hotel Booking" }, { name: "Flight/Train/Transport inter-city" }, { name: "Itinerary traveling" }
+        { name: "Asuransi", desc: "Wajib cover Worldwide agar bisa diklaim di mana saja", profiles: ["all"] },
+        { name: "Ticket Flight PP", profiles: ["all"] }, 
+        { name: "Hotel Booking", profiles: ["all"] }, 
+        { name: "Flight/Train/Transport inter-city", desc: "Sertakan semua tiket kereta/bus jika ada perpindahan", profiles: ["all"] }, 
+        { name: "Itinerary traveling", desc: "Jelas kota, tanggal, lokasi, moda transportasi", profiles: ["all"] }
     ],
     "Data Pribadi": [
-        { name: "Akta Lahir" }, { name: "Kartu Keluarga" }, { name: "Halaman data passport" }, { name: "Halaman cap/visa passport" }, { name: "VISA Approved sebelumnya" }, { name: "NPWP" }, { name: "SPT / Bukti Potong Pajak" }, { name: "STNK Mobil" }, { name: "SHM Rumah" }
+        { name: "Pas Foto", desc: "No edit & no softlens, ukuran Schengen", profiles: ["all"] },
+        { name: "KTP & SIM", profiles: ["all"] }, 
+        { name: "Surat Nikah", desc: "Khusus bagi yang sudah menikah", profiles: ["all"] },
+        { name: "Akta Lahir", profiles: ["all"] }, 
+        { name: "Kartu Keluarga", profiles: ["all"] }, 
+        { name: "Halaman data passport", profiles: ["all"] }, 
+        { name: "Halaman cap/visa passport", desc: "Copy/scan semua halaman cap, endorsement, & ttd", profiles: ["all"] }, 
+        { name: "VISA Approved sebelumnya", desc: "Jika pernah punya Schengen/UK/US di paspor lama", profiles: ["all"] }, 
+        { name: "NPWP", profiles: ["all"] }, 
+        { name: "SPT / Bukti Potong Pajak", desc: "Penting untuk menunjukkan taat pajak tahunan", profiles: ["all"] }, 
+        { name: "STNK Mobil", desc: "Jika bukan nama pribadi, lampirkan surat jaminan ortu", profiles: ["all"] }, 
+        { name: "SHM Rumah", desc: "Jika bukan nama pribadi, lampirkan surat jaminan ortu", profiles: ["all"] },
+        // KHUSUS KANTORAN
+        { name: "ID Card Kantor", profiles: ["kantoran"] }
     ],
     "Surat Keterangan": [
-        { name: "Personal Statement" }, { name: "Employer Reference" }, { name: "Bank reference" }, { name: "Bank statement 3months", desc: "sebisa mungkin rekening aktif, dan keep uang sesuai expense selama di euro beberapa bulan sebelumnya." }, { name: "Payslip 3 months" }
+        { name: "Personal Statement", desc: "Pernyataan tgl pergi-pulang, murni holiday, dengan siapa", profiles: ["all"] }, 
+        { name: "Bank reference", profiles: ["all"] }, 
+        { name: "Bank statement 3 months", desc: "Rek aktif/gaji. JANGAN mendadak diisi besar sblm apply!", profiles: ["all"] }, 
+        { name: "Invitation Letter", desc: "Jika ada kenalan/fam di sana (data diri, kontak, alamat)", profiles: ["all"] },
+        { name: "Dokumen Sponsor", desc: "Jika dibiayai orang lain (Surat, Rek Koran, Bukti Hubungan)", profiles: ["all"] },
+        // KHUSUS KANTORAN
+        { name: "Employer Reference", profiles: ["kantoran"] }, 
+        { name: "Surat Izin Cuti", profiles: ["kantoran"] },
+        { name: "Kontrak Kerja (Agreement)", profiles: ["kantoran"] },
+        { name: "Payslip 3 months", desc: "Jika gada slip, minta surat pernyataan atasan + lampiran paspornya", profiles: ["kantoran"] },
+        // KHUSUS PENGUSAHA
+        { name: "Bukti Usaha (NIB/SIUP/NPWP)", desc: "Dokumen legalitas bisnis yang berjalan", profiles: ["pengusaha"] },
+        // KHUSUS KREATIF / FREELANCER
+        { name: "Portofolio Freelancer", desc: "Screenshot IG Profile dan hasil kerja / project kontrak", profiles: ["kreatif"] }
     ]
 };
 
@@ -23,13 +53,35 @@ const ranks = [
 ];
 
 let totalDocs = 0;
+let currentProfile = 'kantoran'; // Default profile
 
 function init() {
     initTheme();
     setupBriefcase();
+    setupProfile(); // Initialize profile selector
     renderCurrencies();
     renderChecklist();
     updateProgress();
+}
+
+// --- Setup Profile Selector ---
+function setupProfile() {
+    const profileSelect = document.getElementById('user-profile');
+    const savedProfile = localStorage.getItem('europath-user-profile');
+    
+    if (savedProfile) {
+        currentProfile = savedProfile;
+        profileSelect.value = savedProfile;
+    }
+
+    profileSelect.addEventListener('change', (e) => {
+        currentProfile = e.target.value;
+        localStorage.setItem('europath-user-profile', currentProfile);
+        
+        // Re-render checklist based on new profile
+        renderChecklist();
+        updateProgress();
+    });
 }
 
 // Theme
@@ -49,11 +101,9 @@ function updateThemeIcon(theme) {
     document.getElementById('theme-toggle').textContent = theme === 'light' ? '🌙' : '☀️';
 }
 
-// Briefcase Accordion Logic
 function setupBriefcase() {
     const header = document.getElementById('briefcase-toggle');
     const content = document.getElementById('briefcase-content');
-    
     header.addEventListener('click', () => {
         header.classList.toggle('open');
         content.classList.toggle('open');
@@ -67,12 +117,13 @@ function renderCurrencies() {
         { label: 'USD', value: EUR_AMOUNT * rates.USD }, { label: 'MYR', value: EUR_AMOUNT * rates.MYR }
     ].map(c => `
         <div class="currency-item">
-            <div style="font-size: 0.75rem; color: var(--text-muted);">${c.label}</div>
-            <div style="font-weight:600;">${c.value.toLocaleString(undefined, { maximumFractionDigits: 0 })}</div>
+            <div class="currency-label">${c.label}</div>
+            <div class="currency-value">${c.value.toLocaleString(undefined, { maximumFractionDigits: 0 })}</div>
         </div>
     `).join('');
 }
 
+// --- Render Logic (Now Filters by Profile) ---
 function renderChecklist() {
     const container = document.getElementById('document-container');
     const briefcaseList = document.getElementById('briefcase-list');
@@ -81,8 +132,13 @@ function renderChecklist() {
     totalDocs = 0;
 
     for (const [category, docs] of Object.entries(docCategories)) {
-        const catId = category.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase();
+        // FILTER: Only keep docs that match 'all' or the current selected profile
+        const filteredDocs = docs.filter(doc => doc.profiles.includes('all') || doc.profiles.includes(currentProfile));
+        
+        // Skip rendering category if it's empty after filtering
+        if (filteredDocs.length === 0) continue;
 
+        const catId = category.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase();
         const section = document.createElement('div');
         section.className = 'category-section';
         section.innerHTML = `
@@ -93,7 +149,7 @@ function renderChecklist() {
 
         const targetList = document.getElementById(`cat-list-${catId}`);
 
-        docs.forEach(docItem => {
+        filteredDocs.forEach(docItem => {
             totalDocs++;
             const docName = docItem.name;
             const docDesc = docItem.desc ? `<div class="doc-desc">${docItem.desc}</div>` : '';
@@ -126,17 +182,14 @@ function toggleCheck(checkbox, docId) {
     localStorage.setItem(`europath-check-${docId}`, checkbox.checked);
     const label = checkbox.parentElement;
 
-    // 1. Update progress and counter immediately
     updateProgress();
 
-    // 2. Add directional animation class
     if (checkbox.checked) {
         label.classList.add('animating-up');
     } else {
         label.classList.add('animating-down');
     }
 
-    // 3. Wait for animation, move it, and remove animation class so it pops back in
     setTimeout(() => {
         if (checkbox.checked) {
             label.classList.add('completed');
@@ -155,15 +208,15 @@ function toggleCheck(checkbox, docId) {
 
 function updateProgress() {
     let checkedDocs = 0;
+    
+    // We only count checkboxes that are currently rendered on the screen
     const checkboxes = document.querySelectorAll('input[type="checkbox"]');
     checkboxes.forEach(box => { if (box.checked) checkedDocs++; });
 
     const percentage = totalDocs === 0 ? 0 : Math.round((checkedDocs / totalDocs) * 100);
     const progressFill = document.getElementById('progress-fill');
     
-    // Update the Briefcase title counter
     document.getElementById('briefcase-title').textContent = `Secured in Briefcase (${checkedDocs})`;
-
     progressFill.style.width = `${percentage}%`;
     document.getElementById('progress-text').textContent = `${percentage}% Completed`;
 

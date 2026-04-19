@@ -67,6 +67,21 @@ header p { color: var(--text-muted); font-size: 0.85rem; }
 @keyframes pulse-glow { 0% { box-shadow: 0 0 8px var(--success); } 50% { box-shadow: 0 0 15px var(--success); } 100% { box-shadow: 0 0 8px var(--success); } }
 .motivation { font-size: 0.75rem; color: var(--text-muted); text-align: center; font-style: italic;}
 
+/* --- NEW: PROFILE SELECTOR --- */
+.profile-selector { 
+    display: flex; justify-content: space-between; align-items: center; 
+    margin-bottom: 12px; padding-bottom: 10px; 
+    border-bottom: 1px solid rgba(127,140,141,0.2); 
+}
+.profile-selector label { font-size: 0.85rem; font-weight: 600; color: var(--text-main); }
+.profile-selector select { 
+    background: var(--bg-gradient); color: var(--text-main); 
+    border: 1px solid var(--accent); border-radius: 6px; 
+    padding: 4px 8px; font-size: 0.85rem; outline: none; 
+    cursor: pointer; transition: all 0.3s; 
+}
+[data-theme="dark"] .profile-selector select { border-color: var(--text-muted); background: var(--card-bg); }
+
 /* --- COMPACT INSURANCE CARD --- */
 .insurance-card { background: var(--card-bg); padding: 10px; border-radius: var(--border-radius); box-shadow: var(--shadow); transition: background 0.4s; }
 .insurance-card h3 { font-size: 0.8rem; margin-bottom: 8px; text-align: center; color: var(--text-main);}
