@@ -1,28 +1,32 @@
-/* --- Dynamic Color Variables --- */
+/* --- Modern Dynamic Color Variables --- */
 :root {
-    --bg-gradient: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+    --bg-gradient: linear-gradient(135deg, #f0f2f5 0%, #e5e7eb 100%);
+    --panel-bg: rgba(255, 255, 255, 0.75); /* Transparent for glass effect */
     --card-bg: #ffffff;
-    --text-main: #2c3e50;
-    --text-muted: #7f8c8d;
-    --accent: #3498db;
+    --card-border: 1px solid rgba(0, 0, 0, 0.06);
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --accent: #3b82f6;
     --success: #10b981;
     --success-bg: #ecfdf5; 
-    --border-radius: 12px;
-    --shadow: 0 4px 15px rgba(0,0,0,0.05);
+    --border-radius: 16px; /* Rounder, modern corners */
+    --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
 }
 
 [data-theme="dark"] {
-    --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    --bg-gradient: linear-gradient(135deg, #0f172a 0%, #020617 100%); /* Deeper dark mode */
+    --panel-bg: rgba(15, 23, 42, 0.75);
     --card-bg: #1e293b;
+    --card-border: 1px solid rgba(255, 255, 255, 0.08);
     --text-main: #f8fafc;
     --text-muted: #94a3b8;
     --accent: #38bdf8;
     --success: #10b981;
     --success-bg: rgba(16, 185, 129, 0.15); 
-    --shadow: 0 4px 15px rgba(0,0,0,0.3);
+    --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
 
 /* --- SCROLL LAYOUT LOGIC --- */
 body { 
@@ -33,95 +37,123 @@ body {
 
 .app-container { max-width: 800px; margin: 0 auto; height: 100%; display: flex; flex-direction: column; }
 
+/* --- GLASSMORPHISM TOP PANEL --- */
 .top-panel { 
-    padding: 15px 20px 10px 20px; flex-shrink: 0; z-index: 10; 
-    background: var(--bg-gradient);
-    box-shadow: 0 10px 15px -10px rgba(0,0,0,0.1);
+    padding: 20px 20px 10px 20px; flex-shrink: 0; z-index: 10; 
+    background: var(--panel-bg);
+    backdrop-filter: blur(12px); /* The iOS Blur Effect */
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: var(--card-border);
     transition: background 0.4s ease;
-    display: flex; flex-direction: column; gap: 10px; /* Even spacing */
+    display: flex; flex-direction: column; gap: 12px;
 }
 
 .scrollable-area {
-    flex: 1; overflow-y: auto; padding: 15px 20px 40px 20px;
+    flex: 1; overflow-y: auto; padding: 20px 20px 40px 20px;
     scrollbar-width: thin; 
 }
-.scrollable-area::-webkit-scrollbar { width: 6px; }
-.scrollable-area::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 10px; opacity: 0.5; }
+.scrollable-area::-webkit-scrollbar { width: 5px; }
+.scrollable-area::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 10px; opacity: 0.3; }
 
 /* Theme & Header */
 header { text-align: center; position: relative; margin-bottom: 5px;}
-.theme-btn { position: absolute; right: 0; top: 0; background: var(--card-bg); border: none; font-size: 1.1rem; cursor: pointer; padding: 6px; border-radius: 50%; box-shadow: var(--shadow); transition: transform 0.2s; }
+.theme-btn { 
+    position: absolute; right: 0; top: 0; 
+    background: var(--card-bg); border: var(--card-border); 
+    font-size: 1.1rem; cursor: pointer; padding: 6px; 
+    border-radius: 50%; box-shadow: var(--shadow); transition: transform 0.2s; 
+}
 .theme-btn:active { transform: scale(0.9); }
-header h1 { font-weight: 600; font-size: 1.4rem; letter-spacing: -0.5px; transition: color 0.4s; }
-header p { color: var(--text-muted); font-size: 0.85rem; }
+header h1 { font-weight: 700; font-size: 1.5rem; letter-spacing: -0.5px; transition: color 0.4s; }
+header p { color: var(--text-muted); font-size: 0.85rem; font-weight: 500; }
+
+/* Profile Selector */
+.profile-selector { 
+    display: flex; justify-content: space-between; align-items: center; 
+    margin-bottom: 5px; padding-bottom: 12px; 
+    border-bottom: var(--card-border);
+}
+.profile-selector label { font-size: 0.85rem; font-weight: 600; color: var(--text-main); }
+.profile-selector select { 
+    background: var(--card-bg); color: var(--text-main); 
+    border: var(--card-border); border-radius: 8px; 
+    padding: 6px 10px; font-size: 0.85rem; font-weight: 500;
+    outline: none; cursor: pointer; transition: all 0.3s; 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+}
 
 /* Progress Board */
-.progress-board { background: var(--card-bg); padding: 12px 15px; border-radius: var(--border-radius); box-shadow: var(--shadow); transition: background 0.4s; }
-.progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-weight: 600; font-size: 0.9rem; }
-.badge { background: var(--accent); color: white; padding: 3px 8px; border-radius: 20px; font-size: 0.75rem; transition: background 0.3s, box-shadow 0.3s; }
-.progress-bar-container { background: rgba(127, 140, 141, 0.2); height: 8px; border-radius: 4px; overflow: hidden; margin-bottom: 5px; }
-.progress-fill { height: 100%; background-color: var(--success); width: 0%; border-radius: 4px; transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1); background-image: linear-gradient(45deg, rgba(255,255,255,0.15) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0.15) 75%, transparent 75%, transparent); background-size: 1rem 1rem; }
+.progress-board { background: var(--card-bg); border: var(--card-border); padding: 16px; border-radius: var(--border-radius); box-shadow: var(--shadow); transition: background 0.4s; }
+.progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-weight: 600; font-size: 0.9rem; }
+.badge { background: var(--accent); color: white; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.5px; transition: background 0.3s, box-shadow 0.3s; }
+.progress-bar-container { background: rgba(127, 140, 141, 0.15); height: 10px; border-radius: 5px; overflow: hidden; margin-bottom: 8px; }
+.progress-fill { height: 100%; background-color: var(--success); width: 0%; border-radius: 5px; transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1); background-image: linear-gradient(45deg, rgba(255,255,255,0.15) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0.15) 75%, transparent 75%, transparent); background-size: 1rem 1rem; }
 .progress-fill.active { animation: progress-stripes 1s linear infinite; }
 .progress-fill.complete { background-image: none; box-shadow: 0 0 15px var(--success); animation: pulse-glow 2s infinite; }
 @keyframes progress-stripes { from { background-position: 1rem 0; } to { background-position: 0 0; } }
 @keyframes pulse-glow { 0% { box-shadow: 0 0 8px var(--success); } 50% { box-shadow: 0 0 15px var(--success); } 100% { box-shadow: 0 0 8px var(--success); } }
-.motivation { font-size: 0.75rem; color: var(--text-muted); text-align: center; font-style: italic;}
-
-/* --- NEW: PROFILE SELECTOR --- */
-.profile-selector { 
-    display: flex; justify-content: space-between; align-items: center; 
-    margin-bottom: 12px; padding-bottom: 10px; 
-    border-bottom: 1px solid rgba(127,140,141,0.2); 
-}
-.profile-selector label { font-size: 0.85rem; font-weight: 600; color: var(--text-main); }
-.profile-selector select { 
-    background: var(--bg-gradient); color: var(--text-main); 
-    border: 1px solid var(--accent); border-radius: 6px; 
-    padding: 4px 8px; font-size: 0.85rem; outline: none; 
-    cursor: pointer; transition: all 0.3s; 
-}
-[data-theme="dark"] .profile-selector select { border-color: var(--text-muted); background: var(--card-bg); }
+.motivation { font-size: 0.8rem; color: var(--text-muted); text-align: center; font-style: italic; font-weight: 500;}
 
 /* --- COMPACT INSURANCE CARD --- */
-.insurance-card { background: var(--card-bg); padding: 10px; border-radius: var(--border-radius); box-shadow: var(--shadow); transition: background 0.4s; }
-.insurance-card h3 { font-size: 0.8rem; margin-bottom: 8px; text-align: center; color: var(--text-main);}
-.currency-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(60px, 1fr)); gap: 6px; }
-.currency-item { background: rgba(127, 140, 141, 0.05); padding: 5px; border-radius: 6px; text-align: center; font-size: 0.8rem; color: var(--text-main);}
-.currency-label { font-size: 0.65rem; color: var(--text-muted); margin-bottom: 2px;}
-.currency-value { font-weight: 600; font-size: 0.85rem;}
+.insurance-card { background: var(--card-bg); border: var(--card-border); padding: 12px; border-radius: var(--border-radius); box-shadow: var(--shadow); transition: background 0.4s; }
+.insurance-card h3 { font-size: 0.8rem; margin-bottom: 10px; text-align: center; color: var(--text-main); font-weight: 600;}
+.currency-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(60px, 1fr)); gap: 8px; }
+.currency-item { background: rgba(127, 140, 141, 0.05); padding: 8px; border-radius: 10px; text-align: center; color: var(--text-main);}
+.currency-label { font-size: 0.65rem; color: var(--text-muted); margin-bottom: 3px; font-weight: 600; letter-spacing: 0.5px;}
+.currency-value { font-weight: 700; font-size: 0.85rem;}
 
-/* --- THE NEW BRIEFCASE ACCORDION --- */
-.briefcase-container { background: var(--success-bg); border: 1px solid var(--success); border-radius: var(--border-radius); overflow: hidden; transition: background 0.4s; }
-.briefcase-header { padding: 10px 15px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; color: var(--success); font-weight: 600; font-size: 0.9rem; user-select: none; }
+/* --- THE BRIEFCASE ACCORDION --- */
+.briefcase-container { background: var(--success-bg); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: var(--border-radius); overflow: hidden; transition: background 0.4s; }
+.briefcase-header { padding: 12px 16px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; color: var(--success); font-weight: 700; font-size: 0.95rem; user-select: none; }
 .briefcase-title-group { display: flex; align-items: center; gap: 8px; }
 .arrow { font-size: 0.7rem; transition: transform 0.3s ease; }
 .briefcase-header.open .arrow { transform: rotate(180deg); }
-.briefcase-content { max-height: 0; overflow-y: auto; opacity: 0; transition: max-height 0.4s ease, opacity 0.4s ease, padding 0.4s ease; }
-.briefcase-content.open { max-height: 35vh; opacity: 1; padding: 0 10px 10px 10px; }
+.briefcase-content { max-height: 0; overflow-y: auto; opacity: 0; transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease, padding 0.4s ease; }
+.briefcase-content.open { max-height: 35vh; opacity: 1; padding: 0 12px 12px 12px; }
 .briefcase-content::-webkit-scrollbar { width: 4px; }
 .briefcase-content::-webkit-scrollbar-thumb { background: var(--success); border-radius: 10px; opacity: 0.5; }
 
 /* Checklist Base Styles */
-.category-section { margin-bottom: 20px; }
-.category-title { font-size: 1.05rem; margin-bottom: 12px; border-bottom: 2px solid var(--accent); display: inline-block; padding-bottom: 3px; color: var(--text-main); }
+.category-section { margin-bottom: 25px; }
+.category-title { font-size: 1.1rem; margin-bottom: 12px; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 8px;}
+.category-title::before { content: ''; display: block; width: 4px; height: 16px; background: var(--accent); border-radius: 4px; }
 
-/* --- THE FLYING ANIMATION --- */
-.check-item { background: var(--card-bg); padding: 10px 15px; border-radius: 8px; margin-bottom: 8px; display: flex; align-items: center; cursor: pointer; box-shadow: var(--shadow); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease, background 0.3s; opacity: 1; transform: scale(1) translateY(0); }
+/* --- CHECKLIST ITEMS (MODERN CARDS) --- */
+.check-item { 
+    background: var(--card-bg); border: var(--card-border); padding: 12px 16px; 
+    border-radius: 12px; margin-bottom: 10px; display: flex; align-items: center; 
+    cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.02); 
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease, background 0.3s, box-shadow 0.3s; 
+    opacity: 1; transform: scale(1) translateY(0); 
+}
+.check-item:hover { box-shadow: var(--shadow); transform: translateY(-1px); }
 .check-item:active { transform: scale(0.98); }
-.check-item.animating-up { opacity: 0; transform: scale(0.8) translateY(-40px); pointer-events: none; }
-.check-item.animating-down { opacity: 0; transform: scale(0.8) translateY(40px); pointer-events: none; }
-.check-item.completed { background: rgba(16, 185, 129, 0.05); box-shadow: none; border: 1px solid rgba(16, 185, 129, 0.2); }
-.check-item.completed .doc-name { text-decoration: line-through; color: var(--text-muted); }
 
-/* Checkboxes */
+.check-item.animating-up { opacity: 0; transform: scale(0.9) translateY(-20px); pointer-events: none; }
+.check-item.animating-down { opacity: 0; transform: scale(0.9) translateY(20px); pointer-events: none; }
+
+/* Checked State UI */
+.check-item.completed { background: var(--success-bg); box-shadow: none; border: 1px solid rgba(16, 185, 129, 0.2); }
+.check-item.completed .doc-name { text-decoration: line-through; color: var(--text-muted); opacity: 0.8; }
+
+/* Custom Checkboxes */
 .check-item input[type="checkbox"] { display: none; }
-.custom-checkbox { width: 20px; height: 20px; border: 2px solid var(--accent); border-radius: 5px; margin-right: 12px; display: flex; align-items: center; justify-content: center; transition: all 0.2s; flex-shrink: 0; }
-@keyframes pop { 0% { transform: scale(1); } 50% { transform: scale(1.3); } 100% { transform: scale(1); } }
-.check-item input:checked + .custom-checkbox { background: var(--success); border-color: var(--success); animation: pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-.check-item input:checked + .custom-checkbox::after { content: '✓'; color: white; font-size: 12px; font-weight: bold; }
+.custom-checkbox { 
+    width: 22px; height: 22px; border: 2px solid var(--text-muted); border-radius: 6px; 
+    margin-right: 14px; display: flex; align-items: center; justify-content: center; 
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); flex-shrink: 0; opacity: 0.5;
+}
+.check-item:hover .custom-checkbox { opacity: 1; border-color: var(--accent); }
 
-/* Text */
+@keyframes pop { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
+.check-item input:checked + .custom-checkbox { 
+    background: var(--success); border-color: var(--success); opacity: 1;
+    animation: pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+}
+.check-item input:checked + .custom-checkbox::after { content: '✓'; color: white; font-size: 13px; font-weight: 800; }
+
+/* Text Styling */
 .doc-text-wrapper { display: flex; flex-direction: column; justify-content: center; }
-.doc-name { font-weight: 500; font-size: 0.9rem; transition: color 0.2s; color: var(--text-main);}
-.doc-desc { font-size: 0.7rem; color: var(--text-muted); margin-top: 2px; font-style: italic; transition: color 0.2s; }
-.check-item.completed .doc-desc { text-decoration: line-through; opacity: 0.6; }
+.doc-name { font-weight: 600; font-size: 0.95rem; transition: color 0.2s; color: var(--text-main); letter-spacing: -0.2px;}
+.doc-desc { font-size: 0.75rem; color: var(--text-muted); margin-top: 3px; font-style: normal; font-weight: 500; transition: color 0.2s; line-height: 1.3;}
+.check-item.completed .doc-desc { text-decoration: line-through; opacity: 0.5; }
