@@ -68,18 +68,53 @@ header h1 { font-weight: 700; font-size: 1.5rem; letter-spacing: -0.5px; transit
 header p { color: var(--text-muted); font-size: 0.85rem; font-weight: 500; }
 
 /* Profile Selector */
+/* --- PROFILE SELECTOR (STAND-OUT VERSION) --- */
 .profile-selector { 
     display: flex; justify-content: space-between; align-items: center; 
-    margin-bottom: 5px; padding-bottom: 12px; 
-    border-bottom: var(--card-border);
+    margin-bottom: 16px; padding: 12px 14px; 
+    background: rgba(59, 130, 246, 0.08); /* Highlight biru transparan */
+    border: 1px solid rgba(59, 130, 246, 0.3); /* Border biru */
+    border-radius: 12px;
 }
-.profile-selector label { font-size: 0.85rem; font-weight: 600; color: var(--text-main); }
+
+.profile-selector label { 
+    font-size: 0.85rem; font-weight: 700; color: var(--accent); 
+    display: flex; align-items: center; gap: 8px;
+}
+
+/* Trik CSS: Menambahkan ikon koper otomatis tanpa ubah HTML */
+.profile-selector label::before {
+    content: '💼'; 
+    font-size: 1.1rem;
+}
+
 .profile-selector select { 
-    background: var(--card-bg); color: var(--text-main); 
-    border: var(--card-border); border-radius: 8px; 
-    padding: 6px 10px; font-size: 0.85rem; font-weight: 500;
-    outline: none; cursor: pointer; transition: all 0.3s; 
-    box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+    background: var(--accent); color: #ffffff; 
+    border: none; border-radius: 8px; 
+    padding: 8px 12px; font-size: 0.85rem; font-weight: 600;
+    outline: none; cursor: pointer; transition: all 0.3s ease; 
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.profile-selector select:hover { 
+    transform: translateY(-2px); 
+    box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4); 
+}
+
+/* Penyesuaian agar tetap kontras dan elegan di Dark Mode */
+[data-theme="dark"] .profile-selector {
+    background: rgba(56, 189, 248, 0.1);
+    border-color: rgba(56, 189, 248, 0.3);
+}
+
+[data-theme="dark"] .profile-selector select { 
+    color: #0f172a; /* Teks gelap di atas tombol biru terang agar jelas terbaca */
+    font-weight: 700;
+    box-shadow: 0 4px 12px rgba(56, 189, 248, 0.2);
+}
+
+[data-theme="dark"] .profile-selector select:hover {
+    box-shadow: 0 6px 16px rgba(56, 189, 248, 0.3);
 }
 
 /* Progress Board */
